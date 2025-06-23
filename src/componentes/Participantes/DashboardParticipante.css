@@ -1,0 +1,14 @@
+.participante-dashboard {
+  text-align:left;
+  padding: 1rem;
+  color: var(--color-light);
+}
+
+.acciones-participante {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction:row;
+  gap: 1rem;
+  align-items: center;
+}
+

@@ -4,6 +4,7 @@ import LoginForm from "./componentes/Login/LoginForm";
 import DashboardAdministrador from "./componentes/Administradores/DashboardAdmin";
 import DashboardParticipante from "./componentes/Participantes/DashboardParticipante";
 import PrivateRoute from "./componentes/PrivateRoute";
+import ParticipanteForm from "./componentes/Administradores/PartipanteForm/ParticipanteForm";
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
               </PrivateRoute>
             }
           />
-          
+          <Route path="/registro-participante" element={<ParticipanteForm/>}/>
+
           <Route
             path="/dashboard-participante"
             element={

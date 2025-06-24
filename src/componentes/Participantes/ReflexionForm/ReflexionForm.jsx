@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import "./ReflexionForm.css";
 
 function ReflexionForm() {
   const [texto, setTexto] = useState("");
@@ -47,24 +48,18 @@ function ReflexionForm() {
     if (audioBlob) formData.append("audio", audioBlob);
     formData.append("texto", texto);
     formData.append("usuarioId", user?.id);
-    formData.append("fecha", new Date().toISOString().split("T")[0]); // hoy
-
-for (let pair of formData.entries()) {
-    console.log(`${pair[0]}:`, pair[1]);
-  }
+    formData.append("fecha", new Date().toISOString().split("T")[0]);
 
     try {
-      const response = await axios.post("http://localhost:3001/api/reflexion", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      await axios.post("http://localhost:3001/api/reflexion", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
 
       alert("Reflexión guardada con éxito 🙌");
       setTexto("");
       setAudioBlob(null);
       setAudioURL(null);
-      navigate("/historial-reflexiones")
+      navigate("/historial-reflexiones");
     } catch (error) {
       console.error("Error al guardar reflexión:", error);
       alert("Hubo un problema al guardar la reflexión");
@@ -72,44 +67,51 @@ for (let pair of formData.entries()) {
   };
 
   return (
-    <div className="container">
-      <h2>Registrar Reflexión</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="texto">Escribe tu reflexión</label>
-        <textarea
-          id="texto"
-          name="texto"
-          rows="4"
-          value={texto}
-          onChange={(e) => setTexto(e.target.value)}
-        />
+    <div className="reflexion-container">
+      <header className="reflexion-header">
+        <h2>Registrar Reflexión</h2>
+      </header>
 
-        <div style={{ margin: "1rem 0" }}>
-          {!grabando ? (
-            <button type="button" onClick={handleStartRecording}>
-              🎙️ Iniciar Grabación
-            </button>
-          ) : (
-            <button type="button" onClick={handleStopRecording}>
-              🛑 Detener Grabación
-            </button>
-          )}
-        </div>
-
-        {audioURL && (
-          <div>
-            <p>🎧 Audio grabado:</p>
-            <audio controls src={audioURL}></audio>
+      <main className="reflexion-main">
+        <form className="reflexion-form" onSubmit={handleSubmit}>
+            <div className="audio-controls">
+            {!grabando ? (
+              <button type="button" onClick={handleStartRecording}>
+                🎙️ Iniciar Grabación
+              </button>
+            ) : (
+              <button type="button" onClick={handleStopRecording}>
+                🛑 Detener Grabación
+              </button>
+            )}
           </div>
-        )}
+          <label htmlFor="texto"></label>
+          <textarea
+            id="texto"
+            name="texto"
+            rows="2"
+            value={texto}
+            onChange={(e) => setTexto(e.target.value)}
+          />
 
-        <button type="submit">Guardar Reflexión</button>
-      </form>
-       <div>
-         <Link to="/dashboard-participante">
-              <button>Regresar</button>
-              </Link>
-      </div>
+          {audioURL && (
+            <div className="audio-preview">
+              <p>🎧 Audio grabado:</p>
+              <audio controls src={audioURL}></audio>
+            </div>
+          )}
+
+          <button type="submit">Guardar Reflexión</button>
+        </form>
+
+        <Link to="/dashboard-participante">
+          <button className="volver-btn">Regresar</button>
+        </Link>
+      </main>
+
+      <footer className="reflexion-footer">
+        <p>Desarrollado por Jesu Guzman</p>
+      </footer>
     </div>
   );
 }

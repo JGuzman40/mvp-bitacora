@@ -22,19 +22,29 @@ function DashboardParticipante() {
   };
 
   return (
-    <div className="participante-dashboard">
-      <h2>{participante?.name}</h2>
-      <p>Estamos contentos de acompañarte en este proceso personal 🙏</p>
-       <h2>Bitacora</h2>
-      <div className="acciones-participante">
-        <Link to="/registro-reflexion">
-         <button>Grabar Reflexión</button>
-        </Link>
-        <Link to="/historial-reflexiones">
-          <button>Proceso</button>
-        </Link>
-      </div>
-      <button onClick={handleLogout}>Cerrar sesión</button>
+    <div className="participante-container">
+      <header className="participante-header">
+        <h1>Bienvenido, {participante?.name}</h1>
+      </header>
+
+      <main className="participante-main">
+        <p>Estamos contentos de acompañarte en este proceso personal 🙏</p>
+        <h2>Tu Bitácora</h2>
+
+        <div className="acciones-participante">
+          <Link to="/registro-reflexion">
+            <button>Grabar Reflexión</button>
+          </Link>
+          <Link to="/historial-reflexiones">
+            <button>Ver Proceso</button>
+          </Link>
+        </div>
+        <button onClick={handleLogout}>Cerrar sesión</button>
+      </main>
+
+      <footer className="participante-footer">
+        <p>Desarrollado por Jesu Guzman</p>
+      </footer>
     </div>
   );
 }

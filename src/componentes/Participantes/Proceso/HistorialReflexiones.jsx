@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import "./HistorialReflexiones.css";
 
 function HistorialReflexiones() {
   const [reflexiones, setReflexiones] = useState([]);
+  const [expandidas, setExpandidas] = useState({});
 
   const fetchReflexiones = async () => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -17,55 +19,73 @@ function HistorialReflexiones() {
     }
   };
 
+  const toggleExpand = (id) => {
+    setExpandidas((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const toggleCompartir = async (reflexion) => {
+    try {
+      await axios.patch(`http://localhost:3001/api/reflexion/${reflexion.id}/compartir`, {
+        compartirConTerapeuta: !reflexion.compartirConTerapeuta,
+      });
+      fetchReflexiones();
+    } catch (err) {
+      console.error("Error al actualizar compartir:", err);
+    }
+  };
+
   useEffect(() => {
     fetchReflexiones();
   }, []);
 
   return (
-    <div className="container">
-      <h2>🧠 Historial de Reflexiones</h2>
-      {reflexiones.length === 0 ? (
-        <p>No has registrado reflexiones aún.</p>
-      ) : (
-        <div className="reflexiones-list">
-          {reflexiones.map((reflexion) => (
-            <div key={reflexion.id} className="card">
-              <p><strong>Fecha:</strong> {reflexion.fecha}</p>
-              {reflexion.texto && <p><strong>Texto:</strong> {reflexion.texto}</p>}
-              {reflexion.audio_url && (
-                <audio controls src={reflexion.audio_url}></audio>
-              )}
-              <div style={{ marginTop: "0.5rem" }}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={reflexion.compartirConTerapeuta}
-                    onChange={async () => {
-                      try {
-                        await axios.patch(
-                          `http://localhost:3001/api/reflexion/${reflexion.id}/compartir`,
-                          {
-                            compartirConTerapeuta: !reflexion.compartirConTerapeuta,
-                          }
-                        );
-                        fetchReflexiones(); // Refresca el estado
-                      } catch (err) {
-                        console.error("Error al actualizar compartir:", err);
-                      }
-                    }}
-                  />
-                  Compartir con terapeuta
-                </label>
+    <div className="historial-container">
+      <header className="historial-header">
+        <h2>Historial de Reflexiones</h2>
+      </header>
+
+      <main className="historial-main">
+        {reflexiones.length === 0 ? (
+          <p>No has registrado reflexiones aún.</p>
+        ) : (
+          <div className="reflexiones-list">
+            {reflexiones.map((reflexion) => (
+              <div
+                key={reflexion.id}
+                className={`reflexion-card ${expandidas[reflexion.id] ? "expandida" : ""}`}
+                onClick={() => toggleExpand(reflexion.id)}
+              >
+                <p><strong>Día</strong> {reflexion.fecha}</p>
+
+                {expandidas[reflexion.id] && (
+                  <>
+                    {reflexion.texto && <p><strong></strong> {reflexion.texto}</p>}
+                    {reflexion.audio_url && <audio controls src={reflexion.audio_url}></audio>}
+
+                    <button
+                      className={`compartir-btn ${reflexion.compartirConTerapeuta ? "activo" : ""}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleCompartir(reflexion);
+                      }}
+                    >
+                      {reflexion.compartirConTerapeuta ? "✅ Compartido" : "🤝 Compartir"}
+                    </button>
+                  </>
+                )}
               </div>
-            </div>
-          ))}
-        </div>
-      )}
-      <div>
-         <Link to="/dashboard-participante">
-              <button>Regresar</button>
-              </Link>
-      </div>
+            ))}
+          </div>
+        )}
+
+        <Link to="/dashboard-participante">
+          <button className="volver-btn">Regresar</button>
+        </Link>
+      </main>
+
+      <footer className="historial-footer">
+        <p>Desarrollado por Jesu Guzman</p>
+      </footer>
     </div>
   );
 }

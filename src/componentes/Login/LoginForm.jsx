@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import "./LoginForm.css";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
@@ -26,30 +27,29 @@ function LoginForm() {
 
       const { token, user } = response.data;
 
-      // Guardar token y datos del usuario en localStorage
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
 
-      // Redirigir según rol
       if (user.role === "admin") {
         window.location.href = "/dashboard-administrador";
       } else {
         window.location.href = "/dashboard-participante";
       }
     } catch (err) {
-      setError(
-        err.response?.data?.message || "Ocurrió un error al iniciar sesión"
-      );
+      setError(err.response?.data?.message || "Ocurrió un error al iniciar sesión");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "0 auto" }}>
-      <h2>Iniciar sesión</h2>
-      <form onSubmit={handleLogin}>
-        <div>
+    <div className="login-container">
+      <header className="login-header">
+        <h1>Bienvenido a Bitácora</h1>
+      </header>
+
+      <main className="login-main">
+        <form className="login-form" onSubmit={handleLogin}>
           <label>Email</label>
           <input
             type="email"
@@ -57,9 +57,7 @@ function LoginForm() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </div>
 
-        <div>
           <label>Contraseña</label>
           <input
             type="password"
@@ -67,14 +65,18 @@ function LoginForm() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </div>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && <p className="error-message">{error}</p>}
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Cargando..." : "Ingresar"}
-        </button>
-      </form>
+          <button type="submit" disabled={loading}>
+            {loading ? "Cargando..." : "Ingresar"}
+          </button>
+        </form>
+      </main>
+
+      <footer className="login-footer">
+        <p>Desarrollado por Jesu Guzman</p>
+      </footer>
     </div>
   );
 }

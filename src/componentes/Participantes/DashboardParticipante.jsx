@@ -30,8 +30,9 @@ function DashboardParticipante() {
         <Link to="/registro-reflexion">
          <button>Grabar Reflexión</button>
         </Link>
-       
-        <button>Proceso</button>
+        <Link to="/historial-reflexiones">
+          <button>Proceso</button>
+        </Link>
       </div>
       <button onClick={handleLogout}>Cerrar sesión</button>
     </div>

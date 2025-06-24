@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
 function ReflexionForm() {
@@ -8,6 +9,7 @@ function ReflexionForm() {
   const [audioBlob, setAudioBlob] = useState(null);
   const mediaRecorderRef = useRef(null);
   const audioChunks = useRef([]);
+  const navigate = useNavigate();
 
   const handleStartRecording = async () => {
     setGrabando(true);
@@ -62,6 +64,7 @@ for (let pair of formData.entries()) {
       setTexto("");
       setAudioBlob(null);
       setAudioURL(null);
+      navigate("/historial-reflexiones")
     } catch (error) {
       console.error("Error al guardar reflexión:", error);
       alert("Hubo un problema al guardar la reflexión");
@@ -102,6 +105,11 @@ for (let pair of formData.entries()) {
 
         <button type="submit">Guardar Reflexión</button>
       </form>
+       <div>
+         <Link to="/dashboard-participante">
+              <button>Regresar</button>
+              </Link>
+      </div>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import DashboardAdministrador from "./componentes/Administradores/DashboardAdmin
 import DashboardParticipante from "./componentes/Participantes/DashboardParticipante";
 import PrivateRoute from "./componentes/PrivateRoute";
 import ParticipanteForm from "./componentes/Administradores/PartipanteForm/ParticipanteForm";
+import ReflexionForm from "./componentes/Participantes/ReflexionForm/ReflexionForm";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
               </PrivateRoute>
             }
           />
+           <Route path="/registro-reflexion" element={<ReflexionForm/>}/>
         </Routes>
       </main>
     </div>

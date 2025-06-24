@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./DashboardParticipante.css";
 
 function DashboardParticipante() {
@@ -18,7 +18,7 @@ function DashboardParticipante() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    navigate("/login");
+    navigate("/");
   };
 
   return (
@@ -27,7 +27,10 @@ function DashboardParticipante() {
       <p>Estamos contentos de acompañarte en este proceso personal 🙏</p>
        <h2>Bitacora</h2>
       <div className="acciones-participante">
-        <button>Grabar Reflexión</button>
+        <Link to="/registro-reflexion">
+         <button>Grabar Reflexión</button>
+        </Link>
+       
         <button>Proceso</button>
       </div>
       <button onClick={handleLogout}>Cerrar sesión</button>

@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function ParticipanteForm() {
   const [formData, setFormData] = useState({
     name: "",
@@ -39,7 +41,7 @@ function ParticipanteForm() {
     console.log("Payload enviado:", payload); // 🔍 Verificar datos
 
     try {
-      await axios.post("http://localhost:3001/api/user", payload);
+      axios.post(`${API_URL}/user`, payload);
       alert("Participante registrado correctamente.");
       navigate("/dashboard-administrador", { state: { recargar: true } });
     } catch (err) {

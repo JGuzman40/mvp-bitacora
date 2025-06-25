@@ -4,6 +4,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./DashboardAdmin.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function DashboardAdministrador() {
   const [admin, setAdmin] = useState(null);
   const [participantes, setParticipantes] = useState([]);
@@ -19,14 +21,14 @@ function DashboardAdministrador() {
   const fetchParticipantes = async (adminId) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:3001/api/user/admin/${adminId}/participantes`
+        `${API_URL}/user/admin/${adminId}/participantes`
       );
 
       const participantesConEstado = await Promise.all(
         data.map(async (p) => {
           try {
-            const { data: reflexiones } = await axios.get(
-              `http://localhost:3001/api/reflexion/usuario/${p.id}`
+            const { data: reflexiones } =await axios.get(
+              `${API_URL}/reflexion/usuario/${p.id}`
             );
             const comparte = reflexiones.some((r) => r.compartirConTerapeuta);
             return { ...p, comparte };

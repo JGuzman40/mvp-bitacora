@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "./HistorialReflexiones.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function HistorialReflexiones() {
   const [reflexiones, setReflexiones] = useState([]);
   const [expandidas, setExpandidas] = useState({});
@@ -12,7 +14,7 @@ function HistorialReflexiones() {
     if (!user) return;
 
     try {
-      const res = await axios.get(`http://localhost:3001/api/reflexion/usuario/${user.id}`);
+      const res = await axios.get(`${API_URL}/reflexion/usuario/${user.id}`);
       setReflexiones(res.data);
     } catch (err) {
       console.error("Error al obtener reflexiones:", err);
@@ -25,7 +27,7 @@ function HistorialReflexiones() {
 
   const toggleCompartir = async (reflexion) => {
     try {
-      await axios.patch(`http://localhost:3001/api/reflexion/${reflexion.id}/compartir`, {
+      await axios.patch(`${API_URL}/reflexion/${reflexion.id}/compartir`, {
         compartirConTerapeuta: !reflexion.compartirConTerapeuta,
       });
       fetchReflexiones();

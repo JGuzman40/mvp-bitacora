@@ -3,6 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import "./ReflexionForm.css";
 
+const API_URL= import.meta.env.VITE_API_URL;
+
 function ReflexionForm() {
   const [texto, setTexto] = useState("");
   const [grabando, setGrabando] = useState(false);
@@ -51,7 +53,7 @@ function ReflexionForm() {
     formData.append("fecha", new Date().toISOString().split("T")[0]);
 
     try {
-      await axios.post("http://localhost:3001/api/reflexion", formData, {
+      await axios.post(`${API_URL}/reflexion`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

@@ -2,6 +2,9 @@ import { useState } from "react";
 import axios from "axios";
 import "./LoginForm.css";
 
+const VITE_API_URL = import.meta.env.VITE_API_URL;
+console.log("API URL:", import.meta.env.VITE_API_URL);
+
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,7 +23,7 @@ function LoginForm() {
     }
 
     try {
-      const response = await axios.post("http://localhost:3001/api/auth/login", {
+       const response = await axios.post(`${API_URL}/auth/login`, {
         email,
         password,
       });

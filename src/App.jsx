@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Landing from "./componentes/Landing/Landing";
+import CrearAdmin from "./componentes/CrearAdmin";
 import LoginForm from "./componentes/Login/LoginForm";
 import DashboardAdministrador from "./componentes/Administradores/DashboardAdmin";
 import DashboardParticipante from "./componentes/Participantes/DashboardParticipante";
@@ -14,6 +15,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<Landing />} />
+          <Route path="/crear-admin" element={<CrearAdmin />} />
           <Route path="/login" element={<LoginForm />} />
           
           <Route

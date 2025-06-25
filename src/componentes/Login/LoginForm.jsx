@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import "./LoginForm.css";
 
-const VITE_API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL;
 console.log("API URL:", import.meta.env.VITE_API_URL);
 
 function LoginForm() {

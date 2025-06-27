@@ -77,3 +77,16 @@
   color: #ddd;
   padding: 1rem 0;
 }
+
+.password-input-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toggle-password-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}

@@ -3,11 +3,12 @@ import axios from "axios";
 import "./LoginForm.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
-console.log("API URL:", import.meta.env.VITE_API_URL);
+console.log("API URL:", API_URL);
 
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -23,7 +24,7 @@ function LoginForm() {
     }
 
     try {
-       const response = await axios.post(`${API_URL}/auth/login`, {
+      const response = await axios.post(`${API_URL}/auth/login`, {
         email,
         password,
       });
@@ -62,12 +63,21 @@ function LoginForm() {
           />
 
           <label>Contraseña</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className="password-input-container">
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="toggle-password-btn"
+            >
+              {showPassword ? "🙈" : "👁️"}
+            </button>
+          </div>
 
           {error && <p className="error-message">{error}</p>}
 

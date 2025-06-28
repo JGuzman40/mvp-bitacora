@@ -35,7 +35,7 @@
 .reflexion-card {
   background-color: transparent;
   width: 100%;
-  max-width: 30%;
+  max-width: 100%;
   padding: 0.5rem;
   border-radius: 10px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
@@ -117,4 +117,20 @@
   font-size: 0.85rem;
   color: #ddd;
   padding: 1rem 0;
+}
+.reflexion-texto {
+  text-align: justify;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.truncado {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.expandido {
+  display: block;
 }

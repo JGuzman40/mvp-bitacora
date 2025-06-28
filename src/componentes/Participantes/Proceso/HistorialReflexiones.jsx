@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./HistorialReflexiones.css";
 
@@ -8,6 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 function HistorialReflexiones() {
   const [reflexiones, setReflexiones] = useState([]);
   const [expandidas, setExpandidas] = useState({});
+  const { id } = useParams();
   const navigate = useNavigate()
 
   const fetchReflexiones = async () => {
@@ -57,9 +58,13 @@ function HistorialReflexiones() {
     <p><strong>Día</strong> {reflexion.fecha}</p>
     
     {/* Texto con clase para truncar/limitar */}
-    <p className="reflexion-texto">
-      <strong>Reflexión:</strong> {reflexion.texto}
-    </p>
+     <strong>Reflexión:</strong>
+    <p
+  className={`reflexion-texto ${expandidas[reflexion.id] ? "expandido" : "truncado"}`}
+  onClick={() => toggleExpand(reflexion.id)}
+>
+  {reflexion.texto}
+</p>
 
     {reflexion.audio_url && (
       <audio controls src={reflexion.audio_url}></audio>
@@ -69,7 +74,7 @@ function HistorialReflexiones() {
     <button
       onClick={() => {
         localStorage.setItem("reflexionId", reflexion.id);
-        navigate("/editar-reflexiones");
+        navigate(`/editar-reflexiones/${reflexion.id}`);
       }}
     >
       ✏️ Editar

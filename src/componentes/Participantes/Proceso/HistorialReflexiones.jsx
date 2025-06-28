@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./HistorialReflexiones.css";
 
@@ -8,6 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 function HistorialReflexiones() {
   const [reflexiones, setReflexiones] = useState([]);
   const [expandidas, setExpandidas] = useState({});
+  const navigate = useNavigate()
 
   const fetchReflexiones = async () => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -52,31 +53,47 @@ function HistorialReflexiones() {
         ) : (
           <div className="reflexiones-list">
             {reflexiones.map((reflexion) => (
-              <div
-                key={reflexion.id}
-                className={`reflexion-card ${expandidas[reflexion.id] ? "expandida" : ""}`}
-                onClick={() => toggleExpand(reflexion.id)}
-              >
-                <p><strong>Día</strong> {reflexion.fecha}</p>
+  <div key={reflexion.id} className="reflexion-card">
+    <p><strong>Día</strong> {reflexion.fecha}</p>
+    
+    {/* Texto con clase para truncar/limitar */}
+    <p className="reflexion-texto">
+      <strong>Reflexión:</strong> {reflexion.texto}
+    </p>
 
-                {expandidas[reflexion.id] && (
-                  <>
-                    {reflexion.texto && <p><strong></strong> {reflexion.texto}</p>}
-                    {reflexion.audio_url && <audio controls src={reflexion.audio_url}></audio>}
+    {reflexion.audio_url && (
+      <audio controls src={reflexion.audio_url}></audio>
+    )}
 
-                    <button
-                      className={`compartir-btn ${reflexion.compartirConTerapeuta ? "activo" : ""}`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleCompartir(reflexion);
-                      }}
-                    >
-                      {reflexion.compartirConTerapeuta ? "✅ Compartido" : "🤝 Compartir"}
-                    </button>
-                  </>
-                )}
-              </div>
-            ))}
+    {/* Botones de acción */}
+    <button
+      onClick={() => {
+        localStorage.setItem("reflexionId", reflexion.id);
+        navigate("/editar-reflexiones");
+      }}
+    >
+      ✏️ Editar
+    </button>
+
+    <button
+      onClick={async () => {
+        const confirmacion = confirm("¿Estás seguro que deseas eliminar esta reflexión?");
+        if (confirmacion) {
+          try {
+            await axios.delete(`${API_URL}/reflexion/${reflexion.id}`);
+            alert("Reflexión eliminada");
+            setReflexiones(reflexiones.filter(r => r.id !== reflexion.id));
+          } catch (err) {
+            console.error("Error al eliminar:", err);
+            alert("Error al eliminar reflexión");
+          }
+        }
+      }}
+    >
+      🗑 Eliminar
+    </button>
+  </div>
+))}
           </div>
         )}
 

@@ -100,6 +100,12 @@ function ReflexionForm() {
             <div className="audio-preview">
               <p>🎧 Audio grabado:</p>
               <audio controls src={audioURL}></audio>
+               <button type="button" onClick={() => {
+      setAudioBlob(null);
+      setAudioURL(null);
+    }}>
+      🔄 Regrabar
+    </button>
             </div>
           )}
 

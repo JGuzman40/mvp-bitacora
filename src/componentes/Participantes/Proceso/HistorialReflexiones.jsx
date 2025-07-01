@@ -72,6 +72,15 @@ function HistorialReflexiones() {
 
     {/* Botones de acción */}
     <button
+                      className={`compartir-btn ${reflexion.compartirConTerapeuta ? "activo" : ""}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleCompartir(reflexion);
+                      }}
+                    >
+                      {reflexion.compartirConTerapeuta ? "✅ Compartido" : "🤝 Compartir"}
+                    </button>
+    <button
       onClick={() => {
         localStorage.setItem("reflexionId", reflexion.id);
         navigate(`/editar-reflexiones/${reflexion.id}`);
